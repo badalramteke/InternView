@@ -57,10 +57,8 @@ export default function Home() {
   const [questionsAsked, setQuestionsAsked] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
-  // Settings & View state
+  // Settings state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"THREAD" | "TERMINAL" | "METRICS" | "RECORDS">("THREAD");
-  const [showRightPanel, setShowRightPanel] = useState(true);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -277,29 +275,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Main Nav Items */}
-        <nav className="p-2 space-y-1">
-          {[
-            { id: "THREAD", label: "THREAD", icon: "💬" },
-            { id: "TERMINAL", label: "TERMINAL", icon: "💻" },
-            { id: "METRICS", label: "METRICS", icon: "📊" },
-            { id: "RECORDS", label: "RECORDS", icon: "📜" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-sm font-mono text-xs tracking-wider text-left transition-colors ${
-                activeTab === tab.id
-                  ? "bg-[#1a1c20] text-[#00f5ff] border-l-2 border-[#00f5ff] font-semibold"
-                  : "text-[#849495] hover:text-[#e2e2e8] hover:bg-[#1a1c20]/50"
-              }`}
-            >
-              <span>{tab.icon}</span>
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </nav>
-
+        {/* Nav Removed per user request */}
+        <div className="flex-1"></div>
         {/* Bottom Nav */}
         <div className="p-3 border-t border-[#3a494a] space-y-2">
           <button
@@ -351,14 +328,6 @@ export default function Home() {
               ⚙
             </button>
 
-            {/* Toggle Right Panel */}
-            <button
-              onClick={() => setShowRightPanel((prev) => !prev)}
-              title="Toggle Auxiliary Panel"
-              className="p-1.5 rounded bg-[#282a2e] border border-[#3a494a] text-[#e2e2e8] hover:text-[#00f5ff] transition-colors"
-            >
-              📊
-            </button>
           </div>
         </header>
 
@@ -421,111 +390,7 @@ export default function Home() {
             </footer>
           </main>
 
-          {/* AUXILIARY METADATA PANEL (4 Columns) */}
-          {showRightPanel && (
-            <aside className="w-80 bg-[#0c0e12] border-l border-[#3a494a] flex flex-col select-none overflow-y-auto shrink-0">
-              {/* Panel Header */}
-              <div className="p-4 border-b border-[#3a494a] bg-[#1a1c20]">
-                <h2 className="font-mono text-xs font-bold text-[#00f5ff] tracking-widest uppercase">
-                  // CANDIDATE_TELEMETRY
-                </h2>
-              </div>
-
-              {/* Active Profile Info */}
-              <div className="p-4 border-b border-[#3a494a] space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[#e2e2e8]">
-                    {selectedCandidate.name}
-                  </span>
-                  <span className="font-mono text-[10px] bg-[#00f5ff]/10 text-[#00f5ff] px-2 py-0.5 rounded border border-[#00f5ff]/30">
-                    {selectedCandidate.id}
-                  </span>
-                </div>
-                <p className="font-mono text-xs text-[#849495]">
-                  {selectedCandidate.jobRole} · {selectedCandidate.yearsExperience}y exp
-                </p>
-                <div className="text-xs text-[#849495] font-mono">
-                  Edu: {selectedCandidate.education}
-                </div>
-              </div>
-
-              {/* Curriculum Progress */}
-              <div className="p-4 border-b border-[#3a494a] space-y-3">
-                <div className="font-mono text-xs text-[#849495] uppercase tracking-wider flex justify-between">
-                  <span>CURRICULUM_STATS</span>
-                  <span className="text-[#00f5ff]">
-                    {completedMissions.length}/{candidateMissions.length}
-                  </span>
-                </div>
-
-                <div className="space-y-1.5">
-                  <div className="flex justify-between font-mono text-[11px]">
-                    <span className="text-[#849495]">Completed Days:</span>
-                    <span className="text-[#4edea3] font-bold">
-                      {completedMissions.length}
-                    </span>
-                  </div>
-                  <div className="flex justify-between font-mono text-[11px]">
-                    <span className="text-[#849495]">Skipped Days:</span>
-                    <span className="text-[#ffb4ab] font-bold">
-                      {skippedMissions.length}
-                    </span>
-                  </div>
-                  <div className="flex justify-between font-mono text-[11px]">
-                    <span className="text-[#849495]">Target Weaknesses:</span>
-                    <span className="text-[#ffb86b] font-bold">
-                      {weaknessMissions.length}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Focus Weakness Topics */}
-              <div className="p-4 border-b border-[#3a494a] space-y-3">
-                <div className="font-mono text-xs text-[#ffb86b] uppercase tracking-wider">
-                  ⚠ FOCUS_AREAS (ATTEMPTS &gt; 2)
-                </div>
-                {weaknessMissions.length === 0 ? (
-                  <p className="font-mono text-xs text-[#849495]">None detected</p>
-                ) : (
-                  <div className="space-y-2">
-                    {weaknessMissions.map((m: any) => (
-                      <div
-                        key={m.day}
-                        className="p-2 bg-[#1e1c18] border border-[#583300] rounded-sm text-xs"
-                      >
-                        <div className="font-mono text-[#ffb86b] font-semibold">
-                          Day {m.day}: {m.title}
-                        </div>
-                        <div className="font-mono text-[10px] text-[#849495] mt-1">
-                          Attempts: {m.attempts} (High priority)
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Memory State */}
-              <div className="p-4 space-y-3">
-                <div className="font-mono text-xs text-[#00f5ff] uppercase tracking-wider">
-                  🧠 INTENT_MEMORY_STATE
-                </div>
-                <div className="space-y-1.5 font-mono text-[11px]">
-                  <div className="flex justify-between">
-                    <span className="text-[#849495]">Questions Asked:</span>
-                    <span className="text-[#00f5ff] font-bold">
-                      {questionsAsked}/8
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#849495]">Breeth Sync:</span>
-                    <span className="text-[#4edea3]">ACTIVE</span>
-                  </div>
-                </div>
-              </div>
-            </aside>
-          )}
+          {/* Auxiliary Panel Removed per user request */}
         </div>
       </div>
 
