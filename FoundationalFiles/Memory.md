@@ -30,16 +30,20 @@
   * Created `lib/redis.ts` — Upstash Redis + in-memory fallback session store.
   * Created `app/api/interview/route.ts` — POST endpoint with init/turn/termination flow.
   * Installed `@upstash/redis`. TypeScript compiles clean. API tested: 200, 400, 404 all correct.
+* [x] **Phase 2: Data Ingestion & Intent Memory (Breeth)**
+  * Created `lib/curriculum.ts` — pre-indexes 31 days + 8 modules with day→module mapping.
+  * Created `lib/candidate.ts` — skip-filter, weakness detection (attempts > 2), topic selection, LLM context builder.
+  * Created `lib/breeth.ts` — native fetch client for episodes + search with 10s timeouts and try/catch fail-safe.
+  * Upstash Redis confirmed working with real credentials. All Phase 2 tests pass.
 
 ---
 
 ## 🟡 2. CURRENTLY WORKING ON
-* **Active Phase:** Phase 2 — Data Ingestion & Intent Memory (Breeth)
+* **Active Phase:** Phase 3 — LangGraph State Machine
 * **Active File(s):**
-  * `lib/breeth.ts` *(Status: Pending creation)*
-  * `lib/curriculum.ts` *(Status: Pending creation)*
-  * `lib/candidate.ts` *(Status: Pending creation)*
-* **Current Objective:** Build curriculum/candidate data parsers and Breeth API client with fail-safe error handling.
+  * `lib/langgraph/agent.ts` *(Status: Pending creation)*
+  * `lib/langgraph/tools.ts` *(Status: Pending creation)*
+* **Current Objective:** Build the LangGraph state machine with topic selection, question generation, answer evaluation (TEXTBOOK vs APPLIED), Brutal Pushback, and Trap Door logic.
 
 ---
 

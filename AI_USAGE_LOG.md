@@ -307,3 +307,10 @@
 - **The Prompt:** "Start Phase 1 from foundational files — create the API route, Zod schemas, and Redis session manager."
 - **The Output:** Created `lib/schemas.ts` with full Zod v4 schemas for candidate profiles (discriminated union for skipped vs completed missions), init/turn requests, ongoing/final responses, and session state. Created `lib/redis.ts` with Upstash Redis integration + in-memory fallback store. Created `app/api/interview/route.ts` implementing POST-only endpoint with 3-state flow (init → turn → termination). Installed `@upstash/redis`. All validated: TypeScript compiles clean, API returns 200 for init & turns, 400 for invalid payloads, 404 for unknown sessions.
 
+---
+
+### Entry 31 — Phase 2: Data Ingestion & Intent Memory (Breeth)
+- **Timestamp:** 2026-08-08, Phase 2
+- **AI Tool:** Gemini (Antigravity IDE / Claude Opus 4.6 Thinking)
+- **The Prompt:** "Continue to Phase 2 — build curriculum parser, candidate analyzer with skip-filtering and weakness detection, and Breeth API client with fail-safe error handling."
+- **The Output:** Created `lib/curriculum.ts` — pre-indexes all 31 days and 8 modules with day→module mapping. Created `lib/candidate.ts` — implements strict skip-filter (skipped missions excluded from question pool), weakness detection (attempts > 2), deterministic topic selection (weaknesses first), and LLM context builder. Created `lib/breeth.ts` — native fetch client for Breeth REST API with write (POST /v1/episodes with extract_intent:true) and search (POST /v1/search) actions, 10s timeouts, and full try/catch fail-safe. Upstash Redis confirmed working with real credentials. All tests pass: TypeScript clean, skip-filter verified, topic selection picks weaknesses first.
