@@ -25,15 +25,21 @@
   * Copied `candidates.json` and `curriculum.json` to `data/`.
   * Verified dev server starts on localhost:3000.
   * Updated `AI_USAGE_LOG.md` with first entry.
+* [x] **Phase 1: API Contract & Type Safety (Zod Schemas)**
+  * Created `lib/schemas.ts` — Zod v4 schemas for candidate, request, response, and session state.
+  * Created `lib/redis.ts` — Upstash Redis + in-memory fallback session store.
+  * Created `app/api/interview/route.ts` — POST endpoint with init/turn/termination flow.
+  * Installed `@upstash/redis`. TypeScript compiles clean. API tested: 200, 400, 404 all correct.
 
 ---
 
 ## 🟡 2. CURRENTLY WORKING ON
-* **Active Phase:** Phase 1 — API Contract & Type Safety (Zod Schemas)
+* **Active Phase:** Phase 2 — Data Ingestion & Intent Memory (Breeth)
 * **Active File(s):**
-  * `app/api/interview/route.ts` *(Status: Pending creation)*
-  * `lib/redis.ts` *(Status: Pending creation)*
-* **Current Objective:** Create the POST /api/interview endpoint with Zod validation and Upstash Redis session management.
+  * `lib/breeth.ts` *(Status: Pending creation)*
+  * `lib/curriculum.ts` *(Status: Pending creation)*
+  * `lib/candidate.ts` *(Status: Pending creation)*
+* **Current Objective:** Build curriculum/candidate data parsers and Breeth API client with fail-safe error handling.
 
 ---
 

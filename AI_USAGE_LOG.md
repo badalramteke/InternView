@@ -293,8 +293,17 @@
 
 ---
 
-### Entry 1 — Phase 0: Project Scaffolding & Data Setup
+### Entry 29 — Phase 0: Project Scaffolding & Data Setup
 - **Timestamp:** 2026-08-08, Phase 0
 - **AI Tool:** Gemini (Antigravity IDE)
 - **The Prompt:** "Read all foundational docs, then start Phase 0 — scaffold Next.js in the current Intern-View directory with TypeScript, Tailwind, App Router."
 - **The Output:** Scaffolded Next.js 16.3.0 project with TypeScript, Tailwind CSS v4, and App Router. Copied `candidates.json` (20 candidates) and `curriculum.json` (31-day, 8-module syllabus) from `resources/` to `data/`. Verified dev server starts on localhost:3000.
+
+---
+
+### Entry 30 — Phase 1: API Contract & Type Safety
+- **Timestamp:** 2026-08-08, Phase 1
+- **AI Tool:** Gemini (Antigravity IDE / Claude Opus 4.6 Thinking)
+- **The Prompt:** "Start Phase 1 from foundational files — create the API route, Zod schemas, and Redis session manager."
+- **The Output:** Created `lib/schemas.ts` with full Zod v4 schemas for candidate profiles (discriminated union for skipped vs completed missions), init/turn requests, ongoing/final responses, and session state. Created `lib/redis.ts` with Upstash Redis integration + in-memory fallback store. Created `app/api/interview/route.ts` implementing POST-only endpoint with 3-state flow (init → turn → termination). Installed `@upstash/redis`. All validated: TypeScript compiles clean, API returns 200 for init & turns, 400 for invalid payloads, 404 for unknown sessions.
+
