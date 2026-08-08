@@ -140,6 +140,7 @@ export async function createSession(
     cognitiveGaps: [],
     followUpsOnCurrentTopic: 0,
     isDone: false,
+    hasReceivedScorecard: false,
     createdAt: now,
     updatedAt: now,
   };
@@ -221,13 +222,13 @@ export async function recordQuestion(
 
 /**
  * Check if the interview termination conditions are met.
- * Requirements: >= 8 questions asked.
+ * Requirements: >= 8 questions asked AND >= 4 unique days covered.
  * 
  * This is DETERMINISTIC — the LLM never controls this logic.
  * @see /FoundationalFiles/Rules.md Section 5
  */
 export function isInterviewComplete(session: SessionState): boolean {
-  return session.questionsAsked >= 8;
+  return session.questionsAsked >= 8 && session.daysCovered.length >= 4;
 }
 
 /**

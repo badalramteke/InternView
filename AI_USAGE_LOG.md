@@ -373,3 +373,24 @@
 - **AI Tool:** Gemini (Antigravity IDE)
 - **The Prompt:** "this is the root goal so check each and every file , line by line file by file to check is it implemented or not and make sure to do optimizations as needed 'Design and build an AI agent capable of conducting a realistic, multi-turn technical interview. The interview should... Ask intelligent follow-up questions...'"
 - **The Output:** Implemented intelligent follow-up loops to prevent the interview from feeling like a scripted questionnaire. Added `followUpsOnCurrentTopic` to `SessionStateSchema` in `lib/schemas.ts` and `lib/redis.ts`. Created `buildFollowUpPrompt` in `lib/langgraph/prompts.ts`. Updated `handleConversationTurn` in `lib/langgraph/engine.ts` so that when a candidate provides a good (`APPLIED`) answer, the agent asks a deep follow-up question digging into their answer before moving to a new topic. Updated `scripts/test-phase5.ts` to mock the schema change. All constraints verified passing.
+
+---
+
+### Entry 38 — Final Constraints & Force Scorecard Feature
+- **Timestamp:** 2026-08-08, Final Polish
+- **AI Tool:** Gemini (Antigravity IDE)
+- **The Prompt:** "okay do all the fixes and add a button when user wants to stop the preparation and gets the scorecard then also he can continue from their after getting the scorecard as i provided problem statement"
+- **The Output:** 
+  1. Restored the `daysCovered.length >= 4` rule alongside the strict `questionsAsked >= 8` rule to ensure full hackathon compliance.
+  2. Implemented the "Stop & Get Scorecard" button UI in `app/page.tsx`.
+  3. Added `action` parameter to `TurnRequestSchema` to handle `force_scorecard`.
+  4. Updated `lib/langgraph/engine.ts` to export `handleTermination` and handle early termination setting `hasReceivedScorecard`.
+  5. Updated `app/api/interview/route.ts` to remove the termination lock (`session.isDone`), enabling the continuous chat experience after scorecard generation.
+
+---
+
+### Entry 39 — UI Optimization for Force Scorecard
+- **Timestamp:** 2026-08-08, Final Polish
+- **AI Tool:** Gemini (Antigravity IDE)
+- **The Prompt:** "i should get the button get scorecard appear after attending the 8 questions"
+- **The Output:** Updated `app/page.tsx` to conditionally render the "Stop & Get Scorecard" button. Wrapped the button inside a `{questionsAsked >= 8 && (...)}` block so it remains hidden until the candidate has actually reached the 8-question milestone, preserving a clean UI during the initial interview phase.

@@ -151,7 +151,7 @@ export default function Home() {
 
   // ─── Send Message ───
   const sendMessage = useCallback(async () => {
-    if (!inputValue.trim() || isLoading || isInterviewDone) return;
+    if (!inputValue.trim() || isLoading) return;
 
     const userMsg: ChatMessage = {
       id: `msg-${Date.now()}`,
@@ -229,7 +229,52 @@ export default function Home() {
       setIsLoading(false);
       inputRef.current?.focus();
     }
-  }, [inputValue, isLoading, isInterviewDone, sessionId]);
+  }, [inputValue, isLoading, sessionId]);
+
+  const forceScorecard = useCallback(async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/interview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          action: "force_scorecard",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.done) {
+        setIsInterviewDone(true);
+        setFeedback(data.feedback || null);
+        
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `msg-${Date.now()}`,
+            role: "assistant",
+            content: data.reply,
+            timestamp: Date.now(),
+          },
+        ]);
+      }
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `err-${Date.now()}`,
+          role: "system",
+          content: "Network error requesting scorecard.",
+          timestamp: Date.now(),
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoading, sessionId]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -305,7 +350,17 @@ export default function Home() {
             <div className="font-mono text-[11px] bg-[#0c0e12] border border-[#00f5ff]/40 text-[#00f5ff] px-2.5 py-1 rounded-sm font-semibold">
               {formatTimer(elapsedSeconds)}
             </div>
-
+          </div>
+          <div className="flex items-center gap-3">
+            {questionsAsked >= 8 && (
+              <button
+                onClick={forceScorecard}
+                disabled={isLoading || isInterviewDone}
+                className="text-xs font-mono font-semibold px-3 py-1.5 rounded-sm bg-[#ffb86b]/10 text-[#ffb86b] border border-[#ffb86b]/30 hover:bg-[#ffb86b]/20 transition-colors disabled:opacity-50"
+              >
+                STOP & GET SCORECARD
+              </button>
+            )}
             {/* Sidebar Toggle Button */}
             <button
               onClick={() => setIsSidebarVisible(!isSidebarVisible)}
@@ -358,7 +413,7 @@ export default function Home() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    disabled={isLoading || isInterviewDone}
+                    disabled={isLoading}
                     rows={1}
                     placeholder={
                       isInterviewDone

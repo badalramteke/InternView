@@ -129,10 +129,19 @@ export async function handleInitialization(
  */
 export async function handleConversationTurn(
   session: SessionState,
-  userMessage: string
+  userMessage?: string,
+  action?: string
 ): Promise<InterviewResult> {
   const analysis = analyzeCandidate(session.candidate);
   const candidateContext = buildCandidateContext(analysis);
+
+  if (action === "force_scorecard") {
+    return await handleTermination(session, candidateContext);
+  }
+
+  if (!userMessage) {
+    throw new Error("Message is required if action is not force_scorecard");
+  }
 
   // Store user message
   const currentSession = await updateSession({
@@ -208,7 +217,7 @@ export async function handleConversationTurn(
   ).catch(() => {});
 
   // ─── Check if interview should terminate ───
-  if (currentSession.questionsAsked >= 8) {
+  if (!currentSession.hasReceivedScorecard && currentSession.questionsAsked >= 8 && currentSession.daysCovered.length >= 4) {
     return await handleTermination(currentSession, candidateContext);
   }
 
@@ -286,7 +295,7 @@ export async function handleConversationTurn(
     questionsAsked: currentSession.questionsAsked + 1,
     daysCovered: newDaysCovered,
     cognitiveGaps: cognitiveGaps.length > 0
-      ? [...currentSession.cognitiveGaps, ...cognitiveGaps.map((g) => g.content)]
+      ? [...currentSession.cognitiveGaps, ...cognitiveGaps.map((g) => g.content)].slice(-5)
       : currentSession.cognitiveGaps,
     messages: [
       ...currentSession.messages,
@@ -295,7 +304,7 @@ export async function handleConversationTurn(
   });
 
   // ─── Post-question termination check ───
-  if (updatedSession.questionsAsked >= 8) {
+  if (!updatedSession.hasReceivedScorecard && updatedSession.questionsAsked >= 8 && updatedSession.daysCovered.length >= 4) {
     // Don't terminate yet — let the candidate answer this question first.
     // Termination will happen on the NEXT turn.
   }
@@ -376,7 +385,7 @@ async function generatePushback(
 // Node 4: Generate Scorecard (Termination)
 // ─────────────────────────────────────────────
 
-async function handleTermination(
+export async function handleTermination(
   session: SessionState,
   candidateContext: string
 ): Promise<InterviewFinalResult> {
@@ -435,6 +444,7 @@ async function handleTermination(
   const updatedSession = await updateSession({
     ...session,
     isDone: true,
+    hasReceivedScorecard: true,
     messages: [
       ...session.messages,
       createMessage(

@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const { sessionId, message } = parsed.data;
+      const { sessionId, message, action } = parsed.data;
 
       // Fetch existing session
       const session = await getSession(sessionId);
@@ -138,16 +138,8 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Check if interview is already done
-      if (session.isDone) {
-        return NextResponse.json(
-          { error: "Interview has already concluded for this session." },
-          { status: 410 }
-        );
-      }
-
       // ─── LangGraph Engine: Evaluate answer + generate next turn ───
-      const result = await handleConversationTurn(session, message);
+      const result = await handleConversationTurn(session, message, action);
 
       if (result.done) {
         // State 3: Termination & Feedback

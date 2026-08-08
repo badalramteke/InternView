@@ -69,7 +69,8 @@ export const InitRequestSchema = z.object({
 /** State 2: Conversation turn with candidate response */
 export const TurnRequestSchema = z.object({
   sessionId: z.string().min(1, "sessionId is required"),
-  message: z.string().min(1, "message cannot be empty"),
+  message: z.string().optional(),
+  action: z.enum(["force_scorecard", "continue"]).optional(),
 });
 
 /** Discriminated request — init has `candidate`, turn has `message` */
@@ -130,6 +131,7 @@ export const SessionStateSchema = z.object({
   cognitiveGaps: z.array(z.string()).default([]),
   followUpsOnCurrentTopic: z.number().default(0),
   isDone: z.boolean().default(false),
+  hasReceivedScorecard: z.boolean().default(false),
   createdAt: z.number(),
   updatedAt: z.number(),
 });
