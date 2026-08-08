@@ -60,6 +60,7 @@
   * Verified Zod API schemas and structure.
   * Confirmed `.env*` safety in `.gitignore` (no leaked tokens).
   * Passed final Next.js production build (`npm run build`).
+  * Updated AI system prompts (`lib/langgraph/prompts.ts`) to strictly enforce no hand-holding, Type A/B question formats, and Brutal Pushback.
 
 ---
 

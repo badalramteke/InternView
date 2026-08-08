@@ -346,3 +346,11 @@
 - **AI Tool:** Gemini (Antigravity IDE / Claude Opus 4.6 Thinking)
 - **The Prompt:** "Execute Phase 5 — check foundational files, verify component isolation, fix tangled imports, write comprehensive test suite for all critical constraints (8-question minimum, 4-day minimum, pushback counter protection, skip-filter, API contract, component isolation, curriculum integrity, weakness detection, edge cases)."
 - **The Output:** Fixed component isolation: removed unused server-side imports (`getAllDays`, `getCurriculumDay`) from `app/page.tsx` (client component shouldn't import server libs). Created `scripts/test-phase5.ts` — comprehensive 67-assertion test suite covering: (1) 8-question minimum — 7q+4d=NOT complete, 8q+4d=complete, (2) 4-day minimum — 8q+3d=NOT complete, 12q+3d=NOT complete, (3) Pushback counter protection, (4) Skip-filter — 50 random selections never return skipped Day 29, (5) API contract — Zod schemas validate/reject correctly, (6) Component isolation — page.tsx has no server imports, route.ts has no component imports, (7) All 31 days mapped to 8 modules, (8) Weakness detection prioritizes Day 12 (4 attempts), (9) Edge cases — exact boundaries. All 67 tests passed. TypeScript clean. `.env*` confirmed in `.gitignore` (no token leaks).
+
+---
+
+### Entry 36 — AI Persona Strict Constraint Update
+- **Timestamp:** 2026-08-08, Post-Phase 5 Polish
+- **AI Tool:** Gemini (Antigravity IDE / Gemini 3.1 Pro)
+- **The Prompt:** "You do not hand-hold. You do not make small talk. You are evaluating the candidate on their practical engineering depth, not their ability to recite textbook definitions... STRICT CONVERSATIONAL RULES: 1. NO GREETINGS... 2. BRUTAL PUSHBACK... 3. SCANNABLE STRUCTURE... QUESTION FORMATTING: TYPE A: ARCHITECTURAL DEEP-DIVE... TYPE B: THE CODE CHALLENGE"
+- **The Output:** Overhauled `INTERVIEWER_PERSONA` and `buildQuestionPrompt` in `lib/langgraph/prompts.ts`. The AI is now explicitly instructed to never say "Welcome" or "Moving on" unless it is the opening question, to aggressively interrupt generic definitions with Brutal Pushback, format its output using scannable Markdown (bold, lists), and specifically generate either Type A (Architectural Deep-Dive trade-offs) or Type B (Code Challenge snippet debugging) questions.
