@@ -9,6 +9,18 @@
 
 ---
 
+## 📁 Key Project Documents (Judges Start Here!)
+
+To get a clear understanding of the project's requirements, architectural decisions, and AI assistance history, please review the following core documents before exploring the codebase:
+- **[AI_USAGE_LOG.md](./AI_USAGE_LOG.md)**: A complete, chronologically tracked record of all AI interactions and prompts used to build this project (as required for the Stage 1 & 2 Authenticity Review).
+- **[FoundationalFiles/](./FoundationalFiles/)**: Contains the core context driving the agent's logic.
+  - **`PRD.md`**: The Product Requirements Document outlining the core problem, features, and target experience.
+  - **`Architecture.md`**: The high-level technical design, data flows, and state machine diagram.
+  - **`Rules.md`**: The strict deterministic rules and constraints the agent operates under.
+  - **`Memory.md`**: The strategy for managing conversation history and the Breeth integration.
+
+---
+
 ## 📖 Overview
 
 **Intern-View** is an intelligent, dynamic, and constraint-bound AI technical interviewing agent. It evaluates candidates based on their prior curriculum progress, dynamically generates technical questions, detects generic "textbook" answers to push back on them, and leverages **Breeth** to identify and test long-term cognitive gaps.
