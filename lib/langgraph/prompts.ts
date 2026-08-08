@@ -36,6 +36,7 @@ export function buildQuestionPrompt(params: {
   isWeakness: boolean;
   cognitiveGaps: string | null;
   questionsAsked: number;
+  isMCQ: boolean;
 }): string {
   const {
     candidateContext,
@@ -46,6 +47,7 @@ export function buildQuestionPrompt(params: {
     isWeakness,
     cognitiveGaps,
     questionsAsked,
+    isMCQ,
   } = params;
 
   let prompt = `${INTERVIEWER_PERSONA}
@@ -53,7 +55,7 @@ export function buildQuestionPrompt(params: {
 ${candidateContext}
 
 CURRENT STATE:
-Question Number: ${questionsAsked} / 15
+Question Number: ${questionsAsked} / 8
 Current Topic: Day ${dayNumber} — "${dayTitle}"
 Target Objective: ${targetObjective}
 Related Tools/Technologies: ${tools.join(", ")}
@@ -67,7 +69,7 @@ STRICT CONVERSATIONAL RULES:
    - Bullet points for listing system constraints.
    - Numbered steps for scenarios.
 
-${isWeakness ? `⚠️ WEAKNESS ALERT: The candidate struggled with this topic (multiple attempts). Probe deeply into practical understanding, not just definitions.` : ""}`;
+${isWeakness ? `⚠️ WEAKNESS ALERT: The candidate previously struggled with this exact topic. Do NOT go easy on them. Ask a highly scrutinizing, advanced question that aggressively tests their practical capabilities and exposes any superficial knowledge.` : ""}`;
 
   if (cognitiveGaps) {
     prompt += `
@@ -80,7 +82,10 @@ If relevant, weave a question that subtly tests whether the candidate has resolv
   prompt += `
 
 QUESTION FORMATTING:
-Depending on the instruction from the state machine, you will ask one of two types of questions:
+${isMCQ ? `TYPE C: MULTIPLE CHOICE QUESTION
+Since this is an MCQ turn, you MUST present a highly technical scenario followed by exactly 4 options (A, B, C, D). 
+Only one option should be completely correct. Ensure the distractors are plausible engineering misconceptions.
+Do NOT reveal the answer.` : `Depending on the instruction from the state machine, you will ask one of two types of questions:
 
 TYPE A: ARCHITECTURAL DEEP-DIVE
 Present a specific production failure or scaling bottleneck related to the Current Topic. Force the candidate to choose between two difficult trade-offs. 
@@ -88,9 +93,9 @@ Present a specific production failure or scaling bottleneck related to the Curre
 TYPE B: THE CODE CHALLENGE
 Do not ask a conceptual question. Provide a 10-20 line JavaScript/TypeScript or Python code snippet containing a subtle bug, race condition, or memory leak related to the Current Topic. 
 Wrap the code in \`\`\` syntax. 
-Ask the candidate exactly what will break in production and how to fix it.
+Ask the candidate exactly what will break in production and how to fix it.`}
 
-Generate EXACTLY ONE clear, specific technical question formatted as either TYPE A or TYPE B.`;
+Generate EXACTLY ONE clear, specific technical question formatted as ${isMCQ ? 'TYPE C' : 'either TYPE A or TYPE B'}.`;
 
   return prompt;
 }

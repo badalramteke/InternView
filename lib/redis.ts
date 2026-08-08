@@ -221,13 +221,13 @@ export async function recordQuestion(
 
 /**
  * Check if the interview termination conditions are met.
- * Requirements: >= 8 questions asked AND >= 4 unique days covered.
+ * Requirements: >= 8 questions asked.
  * 
  * This is DETERMINISTIC — the LLM never controls this logic.
  * @see /FoundationalFiles/Rules.md Section 5
  */
 export function isInterviewComplete(session: SessionState): boolean {
-  return session.questionsAsked >= 15 && session.daysCovered.length >= 4;
+  return session.questionsAsked >= 8;
 }
 
 /**

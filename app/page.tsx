@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import ChatWindow, { type ChatMessage } from "@/components/ChatWindow";
 import FeedbackScorecard from "@/components/FeedbackScorecard";
+import CandidateSidebar from "@/components/CandidateSidebar";
 import candidatesData from "@/data/candidates.json";
 import type { Feedback } from "@/lib/schemas";
 
@@ -43,9 +44,12 @@ export default function Home() {
   const [isInterviewDone, setIsInterviewDone] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [questionsAsked, setQuestionsAsked] = useState(0);
+  const [maxQuestions, setMaxQuestions] = useState(8);
 
   // Settings state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -90,6 +94,9 @@ export default function Home() {
         const data = await response.json();
 
         if (response.ok) {
+          if (data.questionsAsked !== undefined) setQuestionsAsked(data.questionsAsked);
+          if (data.maxQuestions !== undefined) setMaxQuestions(data.maxQuestions);
+
           const assistantMsg: ChatMessage = {
             id: `msg-${Date.now()}`,
             role: "assistant",
@@ -170,6 +177,9 @@ export default function Home() {
       const data = await response.json();
 
       if (response.ok) {
+        if (data.questionsAsked !== undefined) setQuestionsAsked(data.questionsAsked);
+        if (data.maxQuestions !== undefined) setMaxQuestions(data.maxQuestions);
+
         const isPushback =
           data.reply?.includes("textbook") ||
           data.reply?.includes("That's the textbook") ||
@@ -289,9 +299,21 @@ export default function Home() {
             <div className="font-mono text-[11px] bg-[#0c0e12] border border-[#3a494a] px-2.5 py-1 rounded-sm text-[#849495]">
               CANDIDATE_ID: <span className="text-[#00f5ff]">{selectedCandidate.id}</span>
             </div>
+            <div className="font-mono text-[11px] bg-[#0c0e12] border border-[#00f5ff]/40 px-2.5 py-1 rounded-sm text-[#00f5ff] font-semibold">
+              QUESTIONS: {questionsAsked} / {maxQuestions}
+            </div>
             <div className="font-mono text-[11px] bg-[#0c0e12] border border-[#00f5ff]/40 text-[#00f5ff] px-2.5 py-1 rounded-sm font-semibold">
               {formatTimer(elapsedSeconds)}
             </div>
+
+            {/* Sidebar Toggle Button */}
+            <button
+              onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+              title="Toggle Candidate Sidebar"
+              className="p-1.5 rounded bg-[#282a2e] border border-[#3a494a] text-[#e2e2e8] hover:text-[#00f5ff] hover:border-[#00f5ff] transition-colors flex items-center justify-center w-8 h-8"
+            >
+              {isSidebarVisible ? "▶" : "◀"}
+            </button>
 
             {/* Gear Button to open Settings */}
             <button
@@ -364,7 +386,8 @@ export default function Home() {
             </footer>
           </main>
 
-          {/* Auxiliary Panel Removed per user request */}
+          {/* CANDIDATE SIDEBAR */}
+          {isSidebarVisible && <CandidateSidebar candidate={selectedCandidate} />}
         </div>
       </div>
 

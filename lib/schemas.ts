@@ -83,6 +83,8 @@ export const RequestSchema = z.union([InitRequestSchema, TurnRequestSchema]);
 export const OngoingResponseSchema = z.object({
   reply: z.string(),
   done: z.literal(false),
+  questionsAsked: z.number().optional(),
+  maxQuestions: z.number().optional(),
 });
 
 export const FeedbackSchema = z.object({
@@ -99,6 +101,8 @@ export const FinalResponseSchema = z.object({
   reply: z.string(),
   done: z.literal(true),
   feedback: FeedbackSchema,
+  questionsAsked: z.number().optional(),
+  maxQuestions: z.number().optional(),
 });
 
 /** Any valid API response */

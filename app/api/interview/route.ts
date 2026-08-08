@@ -103,7 +103,12 @@ export async function POST(request: NextRequest) {
       const result = await handleInitialization(sessionWithSystem);
 
       return NextResponse.json(
-        { reply: result.reply, done: false },
+        { 
+          reply: result.reply, 
+          done: false,
+          questionsAsked: result.updatedSession.questionsAsked,
+          maxQuestions: 8
+        },
         { status: 200 }
       );
     }
@@ -151,6 +156,8 @@ export async function POST(request: NextRequest) {
             reply: result.reply,
             done: true,
             feedback: result.feedback,
+            questionsAsked: result.updatedSession.questionsAsked,
+            maxQuestions: 8
           },
           { status: 200 }
         );
@@ -158,7 +165,12 @@ export async function POST(request: NextRequest) {
 
       // Ongoing conversation
       return NextResponse.json(
-        { reply: result.reply, done: false },
+        { 
+          reply: result.reply, 
+          done: false,
+          questionsAsked: result.updatedSession.questionsAsked,
+          maxQuestions: 8
+        },
         { status: 200 }
       );
     }

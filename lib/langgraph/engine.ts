@@ -97,6 +97,7 @@ export async function handleInitialization(
     isWeakness: analysis.weaknesses.some((w) => w.day === selectedDay),
     cognitiveGaps: null, // No gaps on first turn
     questionsAsked: 0,
+    isMCQ: false,
   });
 
   const reply = await generateText(prompt, {
@@ -207,10 +208,7 @@ export async function handleConversationTurn(
   ).catch(() => {});
 
   // ─── Check if interview should terminate ───
-  if (
-    currentSession.questionsAsked >= 15 &&
-    currentSession.daysCovered.length >= 4
-  ) {
+  if (currentSession.questionsAsked >= 8) {
     return await handleTermination(currentSession, candidateContext);
   }
 
@@ -270,6 +268,7 @@ export async function handleConversationTurn(
     isWeakness: analysis.weaknesses.some((w) => w.day === selectedDay),
     cognitiveGaps: gapsContext,
     questionsAsked: currentSession.questionsAsked,
+    isMCQ: currentSession.questionsAsked === 3,
   });
 
   const reply = await generateText(prompt, {
@@ -296,7 +295,7 @@ export async function handleConversationTurn(
   });
 
   // ─── Post-question termination check ───
-  if (updatedSession.questionsAsked >= 15 && updatedSession.daysCovered.length >= 4) {
+  if (updatedSession.questionsAsked >= 8) {
     // Don't terminate yet — let the candidate answer this question first.
     // Termination will happen on the NEXT turn.
   }
@@ -487,6 +486,7 @@ async function generateFallbackQuestion(
     isWeakness: analysis.weaknesses.some((w) => w.day === randomDay),
     cognitiveGaps: null,
     questionsAsked: session.questionsAsked,
+    isMCQ: session.questionsAsked === 3,
   });
 
   const reply = await generateText(prompt, {
