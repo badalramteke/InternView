@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import ChatWindow from "@/components/ChatWindow";
 import FeedbackScorecard from "@/components/FeedbackScorecard";
 import candidatesData from "@/data/candidates.json";
-import { getAllDays, getCurriculumDay } from "@/lib/curriculum";
 import type { Feedback } from "@/lib/schemas";
 
 // ─────────────────────────────────────────────
