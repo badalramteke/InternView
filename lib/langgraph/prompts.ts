@@ -31,7 +31,7 @@ export function buildQuestionPrompt(params: {
   candidateContext: string;
   dayTitle: string;
   dayNumber: number;
-  objectives: string[];
+  targetObjective: string;
   tools: string[];
   isWeakness: boolean;
   cognitiveGaps: string | null;
@@ -42,7 +42,7 @@ export function buildQuestionPrompt(params: {
     candidateContext,
     dayTitle,
     dayNumber,
-    objectives,
+    targetObjective,
     tools,
     isWeakness,
     cognitiveGaps,
@@ -55,13 +55,14 @@ export function buildQuestionPrompt(params: {
 ${candidateContext}
 
 CURRENT STATE:
-Question Number: ${questionsAsked} / 8
+Question Number: ${questionsAsked} / 15
 Current Topic: Day ${dayNumber} — "${dayTitle}"
-Topic Objectives: ${objectives.join("; ")}
+Target Objective: ${targetObjective}
 Related Tools/Technologies: ${tools.join(", ")}
 
 STRICT CONVERSATIONAL RULES:
 1. NO GREETINGS: Unless Question Number is 0, absolutely NEVER say "Welcome", "Hi", "Good to see you", or "Moving on". Jump instantly into the technical scenario.
+2. OBJECTIVE TARGETING: Do NOT ask a broad question about the general topic. You MUST test the candidate specifically on the "Target Objective" listed above.
 2. BRUTAL PUSHBACK: If the candidate gives a high-level, generic answer, your immediate next response must interrupt them, call out the lack of depth, and demand a specific engineering trade-off. 
 3. SCANNABLE STRUCTURE: Do not write walls of text. You must use:
    - **Bold text** for core architectural concepts.
@@ -145,20 +146,23 @@ export function buildFollowUpPrompt(params: {
   candidateAnswer: string;
   questionAsked: string;
   topicTitle: string;
+  followUpCount: number;
 }): string {
-  const { candidateAnswer, questionAsked, topicTitle } = params;
+  const { candidateAnswer, questionAsked, topicTitle, followUpCount } = params;
 
   return `${INTERVIEWER_PERSONA}
 
 The candidate just provided a strong, applied answer to your previous question.
 
 TOPIC: "${topicTitle}"
+FOLLOW-UP DEPTH: ${followUpCount} / 3
 PREVIOUS QUESTION: "${questionAsked}"
 CANDIDATE'S GOOD ANSWER: "${candidateAnswer}"
 
 YOUR TASK:
 Acknowledge their strong answer briefly, then ask an intelligent follow-up question that digs deeper into the SPECIFIC details they just mentioned. 
 - Do NOT change the topic.
+- Escalate the difficulty: since this is follow-up #${followUpCount}, ask something harder (edge cases, scaling challenges, trade-offs).
 - Probe an edge case, a scaling challenge, or an alternative approach related to their exact answer.
 - Do NOT use Type A or Type B formats here; ask a direct conversational follow-up.
 
@@ -236,13 +240,21 @@ Generate the final feedback in this EXACT JSON format:
   "summary": "A 2-3 sentence overall assessment of the candidate's performance",
   "strengths": ["strength1", "strength2", "strength3"],
   "gaps": ["gap1", "gap2", "gap3"],
-  "next": ["recommendation1", "recommendation2", "recommendation3"]
+  "next": ["recommendation1", "recommendation2", "recommendation3"],
+  "domain_scores": {
+    "module_1": 8.5,
+    "module_2": 7.0,
+    "module_X": 9.0
+  },
+  "role_fit": "Assessment of how their skills map to their job title..."
 }
 
 RULES:
 - "strengths" must have 2-5 specific, actionable items based on what they demonstrated
 - "gaps" must have 2-5 specific knowledge gaps identified during the interview
 - "next" must have 2-5 concrete study/practice recommendations
+- "domain_scores" must score 1-10 for the general topics covered
+- "role_fit" must be a 1-2 sentence assessment comparing their performance to the expectations of their Job Role.
 - Be specific and reference actual topics discussed, NOT generic advice
 - The summary should mention their strongest area and biggest gap`;
 }

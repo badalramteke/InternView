@@ -85,12 +85,13 @@ export const OngoingResponseSchema = z.object({
   done: z.literal(false),
 });
 
-/** Feedback payload returned at interview termination */
 export const FeedbackSchema = z.object({
   summary: z.string(),
   strengths: z.array(z.string()),
   gaps: z.array(z.string()),
   next: z.array(z.string()),
+  domain_scores: z.record(z.string(), z.number()),
+  role_fit: z.string(),
 });
 
 /** Final response when interview is complete */

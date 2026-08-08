@@ -38,6 +38,39 @@ export default function FeedbackScorecard({
         </p>
       </div>
 
+      {/* Role Fit */}
+      <div className="space-y-2 bg-[#0c0e12] p-4 rounded-sm border border-[#4edea3]/30">
+        <div className="font-mono text-xs text-[#4edea3] tracking-wider uppercase">
+          ROLE_ALIGNMENT
+        </div>
+        <p className="text-sm leading-relaxed text-[#e2e2e8]">
+          {feedback.role_fit || "No role alignment data provided."}
+        </p>
+      </div>
+
+      {/* Domain Scores Grid */}
+      <div className="bg-[#0c0e12] p-4 rounded-sm border border-[#00f5ff]/30 space-y-3">
+        <div className="font-mono text-xs text-[#00f5ff] uppercase tracking-wider">
+          DOMAIN_SCORES
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Object.entries(feedback.domain_scores || {}).map(([domain, score]) => (
+            <div key={domain} className="space-y-1">
+              <div className="text-[10px] text-[#849495] uppercase tracking-wider truncate" title={domain}>{domain.replace(/_/g, " ")}</div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-1 bg-[#1e2024] rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-[#00f5ff]" 
+                    style={{ width: `${((score as number) / 10) * 100}%` }}
+                  />
+                </div>
+                <div className="text-xs font-mono text-[#e2e2e8]">{score as number}/10</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Strengths & Gaps Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Strengths */}

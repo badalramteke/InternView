@@ -227,7 +227,7 @@ export async function recordQuestion(
  * @see /FoundationalFiles/Rules.md Section 5
  */
 export function isInterviewComplete(session: SessionState): boolean {
-  return session.questionsAsked >= 8 && session.daysCovered.length >= 4;
+  return session.questionsAsked >= 15 && session.daysCovered.length >= 4;
 }
 
 /**

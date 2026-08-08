@@ -92,7 +92,7 @@ export async function handleInitialization(
     candidateContext,
     dayTitle: dayInfo.title,
     dayNumber: dayInfo.day,
-    objectives: dayInfo.objectives,
+    targetObjective: dayInfo.objectives[Math.floor(Math.random() * dayInfo.objectives.length)] || "Understand the core concepts of this day",
     tools: dayInfo.tools,
     isWeakness: analysis.weaknesses.some((w) => w.day === selectedDay),
     cognitiveGaps: null, // No gaps on first turn
@@ -209,18 +209,19 @@ export async function handleConversationTurn(
 
   // ─── Check if interview should terminate ───
   if (
-    currentSession.questionsAsked >= 8 &&
+    currentSession.questionsAsked >= 15 &&
     currentSession.daysCovered.length >= 4
   ) {
     return await handleTermination(currentSession, candidateContext);
   }
 
   // ─── APPLIED → Check if we should ask an Intelligent Follow-Up ───
-  if (currentSession.followUpsOnCurrentTopic === 0 && topicInfo) {
+  if (currentSession.followUpsOnCurrentTopic < 3 && topicInfo) {
     const prompt = buildFollowUpPrompt({
       candidateAnswer: userMessage,
       questionAsked: lastAssistantMsg,
       topicTitle: topicInfo.title,
+      followUpCount: currentSession.followUpsOnCurrentTopic + 1,
     });
 
     const reply = await generateText(prompt, {
@@ -231,7 +232,7 @@ export async function handleConversationTurn(
     const updatedSession = await updateSession({
       ...currentSession,
       questionsAsked: currentSession.questionsAsked + 1, // Follow-up counts as a real question
-      followUpsOnCurrentTopic: 1, // Mark that we've asked a follow-up
+      followUpsOnCurrentTopic: currentSession.followUpsOnCurrentTopic + 1, // Mark that we've asked a follow-up
       messages: [
         ...currentSession.messages,
         createMessage("assistant", reply),
@@ -265,7 +266,7 @@ export async function handleConversationTurn(
     candidateContext,
     dayTitle: dayInfo.title,
     dayNumber: dayInfo.day,
-    objectives: dayInfo.objectives,
+    targetObjective: dayInfo.objectives[Math.floor(Math.random() * dayInfo.objectives.length)] || "Understand the core concepts of this day",
     tools: dayInfo.tools,
     isWeakness: analysis.weaknesses.some((w) => w.day === selectedDay),
     cognitiveGaps: gapsContext,
@@ -297,7 +298,7 @@ export async function handleConversationTurn(
   });
 
   // ─── Post-question termination check ───
-  if (updatedSession.questionsAsked >= 8 && updatedSession.daysCovered.length >= 4) {
+  if (updatedSession.questionsAsked >= 15 && updatedSession.daysCovered.length >= 4) {
     // Don't terminate yet — let the candidate answer this question first.
     // Termination will happen on the NEXT turn.
   }
@@ -428,6 +429,8 @@ async function handleTermination(
       strengths: ["Completed the full interview process", "Engaged with technical topics"],
       gaps: ["Some areas showed surface-level understanding", "Could benefit from more practical experience"],
       next: ["Review flagged topics in depth", "Practice implementing concepts in real projects"],
+      domain_scores: { "General Assessment": 7 },
+      role_fit: "Requires further evaluation to determine exact role alignment.",
     };
   }
 
@@ -481,7 +484,7 @@ async function generateFallbackQuestion(
     candidateContext,
     dayTitle: dayInfo.title,
     dayNumber: dayInfo.day,
-    objectives: dayInfo.objectives,
+    targetObjective: dayInfo.objectives[Math.floor(Math.random() * dayInfo.objectives.length)] || "Understand the core concepts of this day",
     tools: dayInfo.tools,
     isWeakness: analysis.weaknesses.some((w) => w.day === randomDay),
     cognitiveGaps: null,

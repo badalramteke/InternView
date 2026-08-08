@@ -97,55 +97,55 @@ console.log("║   Testing ALL critical constraints from the spec            ║
 console.log("╚═══════════════════════════════════════════════════════════════╝");
 console.log("");
 
-// ─── TEST 1: Interview NEVER ends at 7 questions ───
-console.log("─── TEST 1: 8-Question Minimum Constraint ───");
+// ─── TEST 1: Interview NEVER ends at 14 questions ───
+console.log("─── TEST 1: 15-Question Minimum Constraint ───");
 {
-  // 7 questions, 4 days → MUST NOT complete
-  const session7q4d = makeSession({ questionsAsked: 7, daysCovered: [7, 8, 10, 12] });
+  // 14 questions, 4 days → MUST NOT complete
+  const session14q4d = makeSession({ questionsAsked: 14, daysCovered: [7, 8, 10, 12] });
   assert(
-    !isInterviewComplete(session7q4d),
-    "7 questions + 4 days → NOT complete",
-    `Got: ${isInterviewComplete(session7q4d)}`
+    !isInterviewComplete(session14q4d),
+    "14 questions + 4 days → NOT complete",
+    `Got: ${isInterviewComplete(session14q4d)}`
   );
 
-  // 8 questions, 4 days → MUST complete
-  const session8q4d = makeSession({ questionsAsked: 8, daysCovered: [7, 8, 10, 12] });
+  // 15 questions, 4 days → MUST complete
+  const session15q4d2 = makeSession({ questionsAsked: 15, daysCovered: [7, 8, 10, 12] });
   assert(
-    isInterviewComplete(session8q4d),
-    "8 questions + 4 days → IS complete"
+    isInterviewComplete(session15q4d2),
+    "15 questions + 4 days → IS complete"
   );
 
-  // 10 questions, 4 days → MUST complete
-  const session10q4d = makeSession({ questionsAsked: 10, daysCovered: [7, 8, 10, 12] });
+  // 19 questions, 3 days → MUST NOT complete
+  const session19q3d = makeSession({ questionsAsked: 19, daysCovered: [7, 8, 10] });
   assert(
-    isInterviewComplete(session10q4d),
-    "10 questions + 4 days → IS complete"
+    !isInterviewComplete(session19q3d),
+    "19 questions + 3 days → NOT complete (days too low)"
   );
 
-  // 0 questions → NOT complete
-  const session0q = makeSession({ questionsAsked: 0, daysCovered: [] });
+  // 14 questions, 5 days → MUST NOT complete
+  const session14q5d = makeSession({ questionsAsked: 14, daysCovered: [7, 8, 10, 11, 12] });
   assert(
-    !isInterviewComplete(session0q),
-    "0 questions + 0 days → NOT complete"
+    !isInterviewComplete(session14q5d),
+    "14 questions + 5 days → NOT complete (questions too low)"
   );
 }
 
 // ─── TEST 2: Interview NEVER ends covering only 3 days ───
 console.log("\n─── TEST 2: 4-Day Minimum Constraint ───");
 {
-  // 8 questions, 3 days → MUST NOT complete
-  const session8q3d = makeSession({ questionsAsked: 8, daysCovered: [7, 8, 10] });
+  // 15 questions, 3 days → MUST NOT complete
+  const session15q3d = makeSession({ questionsAsked: 15, daysCovered: [7, 8, 10] });
   assert(
-    !isInterviewComplete(session8q3d),
-    "8 questions + 3 days → NOT complete",
-    `Got: ${isInterviewComplete(session8q3d)}`
+    !isInterviewComplete(session15q3d),
+    "15 questions + 3 days → NOT complete",
+    `Got: ${isInterviewComplete(session15q3d)}`
   );
 
-  // 8 questions, 4 days → MUST complete
-  const session8q4d = makeSession({ questionsAsked: 8, daysCovered: [7, 8, 10, 12] });
+  // 15 questions, 4 days → MUST complete
+  const session15q4d3 = makeSession({ questionsAsked: 15, daysCovered: [7, 8, 10, 12] });
   assert(
-    isInterviewComplete(session8q4d),
-    "8 questions + 4 days → IS complete"
+    isInterviewComplete(session15q4d3),
+    "15 questions + 4 days → IS complete"
   );
 
   // 12 questions, 3 days → MUST NOT complete (high questions but low days)
@@ -270,9 +270,11 @@ console.log("\n─── TEST 5: API Contract Matches Spec ───");
       strengths: ["Strong coding"],
       gaps: ["Weak on deployment"],
       next: ["Study Docker"],
+      domain_scores: { "deployment": 5, "coding": 9 },
+      role_fit: "Excellent for junior role",
     },
   });
-  assert(validFinal.success, "FinalResponse schema validates { reply, done: true, feedback }");
+  assert(validFinal.success, "FinalResponse schema validates { reply, done: true, feedback }", `Got: ${validFinal.error?.message}`);
 }
 
 // ─── TEST 6: Component Isolation ───
@@ -378,12 +380,9 @@ console.log("\n─── TEST 8: Weakness Detection & Topic Priority ───")
 // ─── TEST 9: Edge Cases ───
 console.log("\n─── TEST 9: Edge Cases ───");
 {
-  // Session with exactly 8 questions and exactly 4 days
-  const exactSession = makeSession({ questionsAsked: 8, daysCovered: [7, 12, 22, 28] });
-  assert(
-    isInterviewComplete(exactSession),
-    "Exact boundary (8q, 4d) → IS complete"
-  );
+  // Session with exactly 8 questions  // Exact boundary (15q, 4d) should be complete
+  const boundarySession = makeSession({ questionsAsked: 15, daysCovered: [1, 2, 3, 4] });
+  assert(isInterviewComplete(boundarySession), "Exact boundary (15q, 4d) → IS complete");
 
   // All topics covered — topic selection should still return something
   const analysis = analyzeCandidate(testCandidate);
