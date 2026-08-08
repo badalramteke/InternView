@@ -23,7 +23,6 @@ import {
   buildCandidateContext,
 } from "../lib/candidate";
 import {
-  getCurriculumDay,
   getAllDays,
   getAllModules,
   TOTAL_DAYS,
@@ -167,8 +166,6 @@ console.log("\n─── TEST 2: 4-Day Minimum Constraint ───");
 // ─── TEST 3: Pushback Does NOT Increment Counter ───
 console.log("\n─── TEST 3: Pushback Counter Protection ───");
 {
-  const analysis = analyzeCandidate(testCandidate);
-
   // Simulate: session at 5 questions. After pushback, should still be 5.
   const sessionBeforePushback = makeSession({ questionsAsked: 5, daysCovered: [7, 8] });
   
@@ -227,6 +224,7 @@ console.log("\n─── TEST 5: API Contract Matches Spec ───");
 {
   // Validate that the Zod schemas exist and work
   const { InitRequestSchema, TurnRequestSchema, FinalResponseSchema, OngoingResponseSchema } =
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("../lib/schemas");
 
   // Init request validation
@@ -280,7 +278,9 @@ console.log("\n─── TEST 5: API Contract Matches Spec ───");
 // ─── TEST 6: Component Isolation ───
 console.log("\n─── TEST 6: Component Isolation Checks ───");
 {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const fs = require("fs");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const path = require("path");
 
   // page.tsx should NOT import from lib/langgraph/ (that's server-only)

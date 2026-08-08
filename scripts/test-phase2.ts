@@ -7,7 +7,7 @@
  * Run: npx tsx scripts/test-phase2.ts
  */
 
-import { getCurriculumDay, getAllDays, getAllModules, TOTAL_DAYS, TOTAL_MODULES } from "../lib/curriculum";
+import { getCurriculumDay, getAllModules, TOTAL_DAYS, TOTAL_MODULES } from "../lib/curriculum";
 import { analyzeCandidate, selectNextTopic, buildCandidateContext } from "../lib/candidate";
 import type { Candidate } from "../lib/schemas";
 

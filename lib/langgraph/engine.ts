@@ -97,7 +97,6 @@ export async function handleInitialization(
     isWeakness: analysis.weaknesses.some((w) => w.day === selectedDay),
     cognitiveGaps: null, // No gaps on first turn
     questionsAsked: 0,
-    isFirstQuestion: true,
   });
 
   const reply = await generateText(prompt, {
@@ -135,7 +134,7 @@ export async function handleConversationTurn(
   const candidateContext = buildCandidateContext(analysis);
 
   // Store user message
-  let currentSession = await updateSession({
+  const currentSession = await updateSession({
     ...session,
     messages: [
       ...session.messages,
@@ -271,7 +270,6 @@ export async function handleConversationTurn(
     isWeakness: analysis.weaknesses.some((w) => w.day === selectedDay),
     cognitiveGaps: gapsContext,
     questionsAsked: currentSession.questionsAsked,
-    isFirstQuestion: false,
   });
 
   const reply = await generateText(prompt, {
@@ -489,7 +487,6 @@ async function generateFallbackQuestion(
     isWeakness: analysis.weaknesses.some((w) => w.day === randomDay),
     cognitiveGaps: null,
     questionsAsked: session.questionsAsked,
-    isFirstQuestion: false,
   });
 
   const reply = await generateText(prompt, {

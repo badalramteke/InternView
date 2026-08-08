@@ -178,7 +178,7 @@ function UserNode({
             })}
           </span>
           <span className="font-mono text-xs text-[#849495] tracking-widest uppercase flex items-center gap-1.5">
-            {candidateName.toUpperCase().replace(/\s+/g, "_")} // CANDIDATE 👤
+            {candidateName.toUpperCase().replace(/\s+/g, "_")} {"// CANDIDATE 👤"}
           </span>
         </div>
         <div className="text-[#e2e2e8] text-sm">

@@ -333,6 +333,17 @@
 
 ---
 
+### Entry 39: UI Simplification & Scorecard Visual Enhancements
+- **Date/Time:** 2026-08-08 12:05
+- **Phase:** 5 (Live Steer / Polish)
+- **Action:** Removed extraneous UI components to focus entirely on the chat thread, and enhanced the visual design of the Feedback Scorecard.
+- **Key Changes:**
+  - `app/page.tsx`: Removed the left navigation sidebar (Tabs: TERMINAL, METRICS, RECORDS) and the right telemetry panel to dedicate the full screen to the thread history.
+  - `components/FeedbackScorecard.tsx`: Transformed the `domain_scores` into dynamic CSS-driven animated bar charts with glowing gradients. Re-styled the Strengths, Gaps, and Next Steps sections with custom icons, subtle glassmorphism background gradients, and hover transitions.
+- **Validation:** Next.js production build (`npm run build`) passed successfully.
+
+---
+
 ### Entry 34 — Cyber-Minimalism UI & Default Candidate Auto-Start
 - **Timestamp:** 2026-08-08, Phase 4 Refinement
 - **AI Tool:** Gemini (Antigravity IDE)

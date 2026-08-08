@@ -54,7 +54,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isInterviewDone, setIsInterviewDone] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [questionsAsked, setQuestionsAsked] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   // Settings state
@@ -88,7 +87,6 @@ export default function Home() {
       setIsLoading(true);
       setIsInterviewDone(false);
       setFeedback(null);
-      setQuestionsAsked(0);
       setElapsedSeconds(0);
 
       try {
@@ -111,7 +109,6 @@ export default function Home() {
             timestamp: Date.now(),
           };
           setMessages([assistantMsg]);
-          setQuestionsAsked(1);
         } else {
           setMessages([
             {
@@ -140,8 +137,9 @@ export default function Home() {
 
   // Auto-start on mount with default candidate
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     startInterviewSession(selectedCandidate);
-    // eslint-disable-next-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ─── Auto-scroll ───
@@ -201,7 +199,7 @@ export default function Home() {
         setMessages((prev) => [...prev, assistantMsg]);
 
         if (!isPushback) {
-          setQuestionsAsked((prev) => prev + 1);
+          // Pushback logic here (no UI update needed)
         }
 
         if (data.done) {
@@ -241,18 +239,6 @@ export default function Home() {
       sendMessage();
     }
   };
-
-  // Candidate metrics analysis
-  const candidateMissions = selectedCandidate.raw.missions;
-  const completedMissions = candidateMissions.filter(
-    (m: Record<string, unknown>) => !("skipped" in m && m.skipped)
-  );
-  const skippedMissions = candidateMissions.filter(
-    (m: Record<string, unknown>) => "skipped" in m && m.skipped
-  );
-  const weaknessMissions = completedMissions.filter(
-    (m: Record<string, unknown>) => typeof m.attempts === "number" && m.attempts > 2
-  );
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#111318] text-[#e2e2e8] font-sans">

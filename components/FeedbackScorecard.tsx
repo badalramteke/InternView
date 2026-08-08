@@ -17,7 +17,7 @@ export default function FeedbackScorecard({
       <div className="flex items-center justify-between border-b border-[#3a494a] pb-4">
         <div>
           <div className="font-mono text-xs text-[#00f5ff] tracking-widest uppercase">
-            // FINAL_EVALUATION_SCORECARD
+            {"// FINAL_EVALUATION_SCORECARD"}
           </div>
           <h3 className="text-xl font-bold font-mono text-[#e2e2e8] mt-1">
             CANDIDATE: {candidateName.toUpperCase()}

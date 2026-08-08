@@ -36,7 +36,6 @@ export function buildQuestionPrompt(params: {
   isWeakness: boolean;
   cognitiveGaps: string | null;
   questionsAsked: number;
-  isFirstQuestion: boolean;
 }): string {
   const {
     candidateContext,
@@ -47,7 +46,6 @@ export function buildQuestionPrompt(params: {
     isWeakness,
     cognitiveGaps,
     questionsAsked,
-    isFirstQuestion,
   } = params;
 
   let prompt = `${INTERVIEWER_PERSONA}
