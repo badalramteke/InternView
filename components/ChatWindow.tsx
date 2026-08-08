@@ -2,7 +2,7 @@
 
 import InteractiveCodeBlock from "./InteractiveCodeBlock";
 
-interface ChatMessage {
+export interface ChatMessage {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;

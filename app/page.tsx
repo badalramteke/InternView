@@ -1,22 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import ChatWindow from "@/components/ChatWindow";
+import ChatWindow, { type ChatMessage } from "@/components/ChatWindow";
 import FeedbackScorecard from "@/components/FeedbackScorecard";
 import candidatesData from "@/data/candidates.json";
 import type { Feedback } from "@/lib/schemas";
-
-// ─────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────
-
-interface ChatMessage {
-  id: string;
-  role: "user" | "assistant" | "system";
-  content: string;
-  timestamp: number;
-  isPushback?: boolean;
-}
 
 interface CandidateOption {
   id: string;
