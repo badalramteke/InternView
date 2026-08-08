@@ -327,7 +327,7 @@ export default function Home() {
           <div className="font-mono text-xs text-[#00f5ff] tracking-widest uppercase flex items-center gap-3">
             <span>INTERN-VIEW AI INTERVIEW</span>
             <span className="text-[#3a494a]">|</span>
-            <span className="text-[#849495]">MODEL: GEMINI 2.0 FLASH</span>
+            <span className="text-[#849495]">MODEL: GEMINI 3.5 FLASH</span>
           </div>
 
           <div className="flex items-center gap-3">
