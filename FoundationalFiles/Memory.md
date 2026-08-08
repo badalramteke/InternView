@@ -20,17 +20,20 @@
   * Confirmed Next.js (App Router), LangGraph.js, Upstash Redis, Tailwind CSS, Zod.
 * [x] **UI/UX Design System**
   * Finalized "Threaded Developer Workspace" theme (The "Stitch" motif).
+* [x] **Phase 0: Project Scaffolding & Data Setup**
+  * Scaffolded Next.js 16.3.0 with TypeScript, Tailwind CSS v4, App Router.
+  * Copied `candidates.json` and `curriculum.json` to `data/`.
+  * Verified dev server starts on localhost:3000.
+  * Updated `AI_USAGE_LOG.md` with first entry.
 
 ---
 
 ## 🟡 2. CURRENTLY WORKING ON
-* **Active Phase:** Phase 1 — Project Scaffolding & Data Setup
+* **Active Phase:** Phase 1 — API Contract & Type Safety (Zod Schemas)
 * **Active File(s):**
-  * `PROGRESS.md` *(Status: Created)*
-  * `AI_USAGE_LOG.md` *(Status: Pending initialization on first commit)*
-  * `data/candidates.json` *(Status: Pending creation)*
-  * `data/curriculum.json` *(Status: Pending creation)*
-* **Current Objective:** Complete initial Next.js project setup post-kickoff and push initial commit with mandatory documentation logs.
+  * `app/api/interview/route.ts` *(Status: Pending creation)*
+  * `lib/redis.ts` *(Status: Pending creation)*
+* **Current Objective:** Create the POST /api/interview endpoint with Zod validation and Upstash Redis session management.
 
 ---
 
