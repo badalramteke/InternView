@@ -2,9 +2,12 @@
  * POST /api/interview — The single API endpoint for the AI Interview Agent
  * 
  * Handles three states:
- * 1. Initialization: { sessionId, candidate } → creates session, returns greeting
- * 2. Conversation Turn: { sessionId, message } → processes answer, returns next question
+ * 1. Initialization: { sessionId, candidate } → creates session, LLM greeting + first question
+ * 2. Conversation Turn: { sessionId, message } → evaluates answer, generates next question
  * 3. Termination: auto-triggered when questionsAsked >= 8 && daysCovered >= 4
+ * 
+ * All interview logic is delegated to the LangGraph engine (lib/langgraph/engine.ts).
+ * This route handles request validation, session persistence, and response formatting.
  * 
  * @see /data/technical-spec.md for the full API contract
  * @see /FoundationalFiles/PRD.md Section 5 for payload specs
@@ -17,16 +20,17 @@ import {
   TurnRequestSchema,
   type InitRequest,
   type TurnRequest,
-  type OngoingResponse,
   type ChatMessage,
 } from "@/lib/schemas";
 import {
   createSession,
   getSession,
-  updateSession,
   appendMessage,
-  isInterviewComplete,
 } from "@/lib/redis";
+import {
+  handleInitialization,
+  handleConversationTurn,
+} from "@/lib/langgraph/engine";
 
 // ─────────────────────────────────────────────
 // Request Type Detection
@@ -93,28 +97,15 @@ export async function POST(request: NextRequest) {
         content: `Interview initialized for ${candidate.member.name} (${candidate.member.jobRole}).`,
         timestamp: Date.now(),
       };
-      await appendMessage(session, systemMessage);
+      const sessionWithSystem = await appendMessage(session, systemMessage);
 
-      // Placeholder reply — will be replaced by LLM in Phase 3
-      const greeting = `Welcome, ${candidate.member.name}. I'll be conducting your technical interview today based on your progress through the AI Engineering curriculum. Let's get started.`;
+      // ─── LangGraph Engine: Generate greeting + first question ───
+      const result = await handleInitialization(sessionWithSystem);
 
-      // Store the assistant's greeting
-      const assistantMessage: ChatMessage = {
-        role: "assistant",
-        content: greeting,
-        timestamp: Date.now(),
-      };
-      const updatedSession = await getSession(sessionId);
-      if (updatedSession) {
-        await appendMessage(updatedSession, assistantMessage);
-      }
-
-      const response: OngoingResponse = {
-        reply: greeting,
-        done: false,
-      };
-
-      return NextResponse.json(response, { status: 200 });
+      return NextResponse.json(
+        { reply: result.reply, done: false },
+        { status: 200 }
+      );
     }
 
     // ─── State 2: Conversation Turn ───
@@ -150,54 +141,26 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Store the candidate's message
-      const userMessage: ChatMessage = {
-        role: "user",
-        content: message,
-        timestamp: Date.now(),
-      };
-      const sessionWithUserMsg = await appendMessage(session, userMessage);
+      // ─── LangGraph Engine: Evaluate answer + generate next turn ───
+      const result = await handleConversationTurn(session, message);
 
-      // ─── Check termination conditions (deterministic, not LLM) ───
-      if (isInterviewComplete(sessionWithUserMsg)) {
-        // Mark session as done
-        const finalSession = await updateSession({
-          ...sessionWithUserMsg,
-          isDone: true,
-        });
-
-        // Placeholder feedback — will be replaced by LLM scorecard in Phase 3
-        const response = {
-          reply: "Thank you for completing the interview. Here is your feedback.",
-          done: true as const,
-          feedback: {
-            summary: `Interview completed for ${finalSession.candidate.member.name}. ${finalSession.questionsAsked} questions asked across ${finalSession.daysCovered.length} curriculum days.`,
-            strengths: ["Placeholder — LLM-generated strengths will appear here in Phase 3"],
-            gaps: ["Placeholder — LLM-generated gaps will appear here in Phase 3"],
-            next: ["Placeholder — LLM-generated next steps will appear here in Phase 3"],
+      if (result.done) {
+        // State 3: Termination & Feedback
+        return NextResponse.json(
+          {
+            reply: result.reply,
+            done: true,
+            feedback: result.feedback,
           },
-        };
-
-        return NextResponse.json(response, { status: 200 });
+          { status: 200 }
+        );
       }
 
-      // Placeholder reply — will be replaced by LangGraph state machine in Phase 3
-      const reply = `I've noted your response. Let's continue with the next question. (Questions asked: ${sessionWithUserMsg.questionsAsked}, Days covered: ${sessionWithUserMsg.daysCovered.length})`;
-
-      // Store assistant reply
-      const assistantMessage: ChatMessage = {
-        role: "assistant",
-        content: reply,
-        timestamp: Date.now(),
-      };
-      await appendMessage(sessionWithUserMsg, assistantMessage);
-
-      const response: OngoingResponse = {
-        reply,
-        done: false,
-      };
-
-      return NextResponse.json(response, { status: 200 });
+      // Ongoing conversation
+      return NextResponse.json(
+        { reply: result.reply, done: false },
+        { status: 200 }
+      );
     }
 
     // ─── Invalid Request ───

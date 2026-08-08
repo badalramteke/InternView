@@ -35,37 +35,28 @@
   * Created `lib/candidate.ts` — skip-filter, weakness detection (attempts > 2), topic selection, LLM context builder.
   * Created `lib/breeth.ts` — native fetch client for episodes + search with 10s timeouts and try/catch fail-safe.
   * Upstash Redis confirmed working with real credentials. All Phase 2 tests pass.
+* [x] **Phase 3: LangGraph State Machine (Anti-Hallucination Core)**
+  * Created `lib/gemini.ts` — Gemini client with retry (2 attempts, 15s timeout), JSON mode, fallback responses.
+  * Created `lib/langgraph/prompts.ts` — All LLM prompts: persona, question gen, APPLIED/TEXTBOOK classifier, Brutal Pushback, scorecard.
+  * Created `lib/langgraph/engine.ts` — 4-node state machine: SelectTopic (deterministic), GenerateQuestion (LLM+Breeth), EvaluateResponse (APPLIED/TEXTBOOK), GenerateScorecard.
+  * Updated `app/api/interview/route.ts` — Replaced placeholders with engine calls.
+  * Installed `@langchain/langgraph`, `@langchain/core`, `@google/genai`.
+  * E2E tested: LLM questions, Brutal Pushback (no counter increment), topic advancement, Redis + Breeth + Gemini all confirmed.
 
 ---
 
 ## 🟡 2. CURRENTLY WORKING ON
-* **Active Phase:** Phase 3 — LangGraph State Machine
+* **Active Phase:** Phase 4 — Single-Screen Chat UI
 * **Active File(s):**
-  * `lib/langgraph/agent.ts` *(Status: Pending creation)*
-  * `lib/langgraph/tools.ts` *(Status: Pending creation)*
-* **Current Objective:** Build the LangGraph state machine with topic selection, question generation, answer evaluation (TEXTBOOK vs APPLIED), Brutal Pushback, and Trap Door logic.
+  * `app/page.tsx` *(Status: Pending)*
+  * `components/ChatWindow.tsx` *(Status: Pending)*
+  * `components/FeedbackScorecard.tsx` *(Status: Pending)*
+* **Current Objective:** Build the immersive chat interface with interactive code blocks and scorecard rendering.
 
 ---
 
 ## 🔴 3. UPCOMING ROADMAP
 
-### Phase 2: Core API & Memory Pluggables
-* [ ] Create `app/api/interview/route.ts` handling `POST` requests.
-* [ ] Integrate Upstash Redis for `sessionId` state in `lib/redis.ts`.
-* [ ] Build Breeth API native `fetch` client in `lib/breeth.ts` with fail-safe error handling.
-* [ ] Implement Zod schemas for incoming and outgoing payloads.
-
-### Phase 3: LangGraph State Machine
-* [ ] Define `InterviewState` tracking `questionsAsked` and `daysCovered`.
-* [ ] Implement skip-filtering logic based on `candidates.json`.
-* [ ] Program weakness targeting for high attempt counts (`attempts > 2`).
-* [ ] Connect LLM node for question generation and pushback logic.
-### Phase 3: LangGraph State Machine
-* [ ] Define `InterviewState` tracking `questionsAsked` and `daysCovered`.
-* [ ] Implement skip-filtering logic based on `candidates.json`.
-* [ ] **Build `EvaluateResponse` Node:** Implement the `TEXTBOOK` vs `APPLIED` classifier.
-* [ ] **Build Brutal Pushback Logic:** Route `TEXTBOOK` answers to a pushback prompt without incrementing the question counter.
-* [ ] **Build Trap Door Logic:** Configure the `GenerateQuestion` node to check Breeth for unresolved gaps before drafting new questions. 
 ### Phase 4: Threaded UI & Interactive Components
 * [ ] Build continuous chat feed with vertical dashed "Stitch" line in `app/page.tsx`.
 * [ ] Create dynamic code component (`components/InteractiveCode.tsx`).
