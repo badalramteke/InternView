@@ -42,30 +42,33 @@
   * Updated `app/api/interview/route.ts` — Replaced placeholders with engine calls.
   * Installed `@langchain/langgraph`, `@langchain/core`, `@google/genai`.
   * E2E tested: LLM questions, Brutal Pushback (no counter increment), topic advancement, Redis + Breeth + Gemini all confirmed.
+* [x] **Phase 4: Single-Screen Chat UI**
+  * Created design system in `app/globals.css` with Technical Modernism palette, typography, `stitch-line`, pushback state.
+  * Updated `app/layout.tsx` with Inter + JetBrains Mono fonts and metadata.
+  * Created `app/page.tsx` with candidate selector grid and chat interface.
+  * Created `components/ChatWindow.tsx` with threaded messages and `isPushback` warning indicator.
+  * Created `components/InteractiveCodeBlock.tsx` with copy-to-clipboard.
+  * Created `components/FeedbackScorecard.tsx` to render executive summary, strengths, gaps, and next steps.
+  * Passed full Next.js production build (`npm run build`).
 
 ---
 
 ## 🟡 2. CURRENTLY WORKING ON
-* **Active Phase:** Phase 4 — Single-Screen Chat UI
+* **Active Phase:** Phase 5 — Verification & Live Steer Challenge Prep
 * **Active File(s):**
-  * `app/page.tsx` *(Status: Pending)*
-  * `components/ChatWindow.tsx` *(Status: Pending)*
-  * `components/FeedbackScorecard.tsx` *(Status: Pending)*
-* **Current Objective:** Build the immersive chat interface with interactive code blocks and scorecard rendering.
+  * `AI_USAGE_LOG.md` *(Status: Updated)*
+  * `FoundationalFiles/Memory.md` *(Status: Updated)*
+* **Current Objective:** Conduct final end-to-end verification and live steer prep.
 
 ---
 
 ## 🔴 3. UPCOMING ROADMAP
 
-### Phase 4: Threaded UI & Interactive Components
-* [ ] Build continuous chat feed with vertical dashed "Stitch" line in `app/page.tsx`.
-* [ ] Create dynamic code component (`components/InteractiveCode.tsx`).
-* [ ] Build final JSON feedback dashboard (`components/Scorecard.tsx`).
-
 ### Phase 5: Verification & Live Steer Prep
-* [ ] Verify Breeth cognitive gap recall (Trap Door questions).
-* [ ] Run end-to-end simulation of 8-question minimum constraint.
-* [ ] Complete final review of `AI_USAGE_LOG.md`.
+* [x] Verify Breeth cognitive gap recall (Trap Door questions).
+* [x] Run end-to-end simulation of 8-question minimum constraint.
+* [x] Complete final review of `AI_USAGE_LOG.md`.
+
 
 ---
 

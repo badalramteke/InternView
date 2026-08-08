@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─────────────────────────────────────────────
+   Cyber-Minimalism / Threaded Developer Workspace Tokens
+   ───────────────────────────────────────────── */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: #111318;
+  --color-surface-dim: #111318;
+  --color-surface-bright: #37393e;
+  --color-surface-container-lowest: #0c0e12;
+  --color-surface-container-low: #1a1c20;
+  --color-surface-container: #1e2024;
+  --color-surface-container-high: #282a2e;
+  --color-surface-container-highest: #333539;
+
+  --color-on-surface: #e2e2e8;
+  --color-on-surface-variant: #b9caca;
+
+  --color-primary: #00f5ff;
+  --color-on-primary: #003739;
+  --color-primary-container: #00dce5;
+
+  --color-secondary: #ffb86b;
+  --color-on-secondary: #492900;
+  --color-secondary-container: #ed9000;
+
+  --color-tertiary: #f9faff;
+  --color-on-tertiary: #2a3139;
+
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+
+  --color-outline: #849495;
+  --color-outline-variant: #3a494a;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─────────────────────────────────────────────
+   Global Reset & Base
+   ───────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: #111318;
+  color: #e2e2e8;
+  font-family: var(--font-sans);
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for dark IDE aesthetic */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0c0e12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a494a;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00f5ff;
+}
+
+/* Typography Utilities */
+.text-label-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.text-code-sm {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* The Stitch Line (dashed cyan vertical connector) */
+.stitch-thread {
+  position: relative;
+}
+
+.stitch-thread::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed rgba(0, 245, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 245, 255, 0.2);
+}
+
+/* Node Rings on Stitch Line */
+.stitch-node-ring {
+  position: absolute;
+  left: 11px;
+  top: 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #111318;
+  border: 2px solid #00f5ff;
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+  z-index: 10;
+}
+
+.stitch-node-ring-pushback {
+  border-color: #ffb86b !important;
+  box-shadow: 0 0 10px rgba(255, 184, 107, 0.6) !important;
+}
+
+/* Animations */
+@keyframes nodePulse {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(0, 245, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(0, 245, 255, 0.8);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-node-pulse {
+  animation: nodePulse 2s infinite ease-in-out;
 }
