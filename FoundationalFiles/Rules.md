@@ -3,7 +3,7 @@
 ## 1. What to Do 🟢
 * **Create Repo After Kickoff:** Start your public Git repository strictly after the official hackathon kickoff time. 🕒
 * **Commit Regularly:** Make small, frequent commits with clear messages to prove genuine development history. 🔨
-* **Maintain `AI_USAGE_LOG.md`:** Document your prompts, AI assistant interactions, Breeth memory integration, and tool usage continuously in the project root. 📝
+* **Maintain `PROMPTS.md`:** Document your prompts, AI assistant interactions, Breeth memory integration, and tool usage continuously in the project root. 📝
 * **Enforce API Contract:** Implement `POST /api/interview` exactly as defined in the spec document[cite: 3]. 🔌
 * **Enforce Rules in Code:** Use deterministic code to track the 8-question and 4-day curriculum minimums. 📊
 * **Leverage Breeth for Intent Memory:** Store candidate reasoning trends and cognitive patterns in Breeth (`thebreeth.com`) on every turn. 🧠
@@ -12,7 +12,7 @@
 ## 2. What to Avoid 🔴
 * **No Early Repositories:** Do not use a repository created before the hackathon starts. ❌
 * **No Single Giant Commit:** Do not dump a finished codebase in one massive initial commit. ❌
-* **No Missing Logs:** Do not forget to include the `AI_USAGE_LOG.md` file in your repository. ❌
+* **No Missing Logs:** Do not forget to include the `PROMPTS.md` file in your repository. ❌
 * **No Leaked Tokens:** Never commit Breeth Bearer tokens (`ck_live_...`) to GitHub. Keep them safely inside `.env`. 🔑
 * **No Memory for Counter Logic:** Do not use Breeth or LLMs to track question counts or covered days. Use code for math. 🛑
 * **No Out-of-Scope Features:** Do not waste time on authentication, voice features, or mobile apps. 🚫
@@ -50,7 +50,7 @@
   * Write the system architecture, state machine logic, and UI components. 🖥️
   * Connect Breeth REST endpoints inside helper utility files. 🔗
   * Use AI coding assistants (Cursor, Copilot, Gemini) to accelerate building. ⚡
-  * Document all major prompts and AI tools in `AI_USAGE_LOG.md` for authenticity verification. 📝
+  * Document all major prompts and AI tools in `PROMPTS.md` for authenticity verification. 📝
 
   ## 5. Boundaries of AI on the Project 🤖
 * **What the AI Engine & Breeth Do:**

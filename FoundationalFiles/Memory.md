@@ -11,7 +11,7 @@
 ## 🟢 1. WORKING ON THIS
 * [x] **Hackathon Strategy & Rules**
   * Evaluated 4-stage judging criteria and Live Steer Challenge requirements.
-  * Created `AI_USAGE_LOG.md` template for Stage 1/2 compliance.
+  * Created `PROMPTS.md` template for Stage 1/2 compliance.
 * [x] **Product Requirements Document (PRD)**
   * Locked in 8-question / 4-day curriculum minimum limits.
   * Defined Breeth (`thebreeth.com`) intent-memory mechanics and Trap Door feature.
@@ -24,7 +24,7 @@
   * Scaffolded Next.js 16.3.0 with TypeScript, Tailwind CSS v4, App Router.
   * Copied `candidates.json` and `curriculum.json` to `data/`.
   * Verified dev server starts on localhost:3000.
-  * Updated `AI_USAGE_LOG.md` with first entry.
+  * Updated `PROMPTS.md` with first entry.
 * [x] **Phase 1: API Contract & Type Safety (Zod Schemas)**
   * Created `lib/schemas.ts` — Zod v4 schemas for candidate, request, response, and session state.
   * Created `lib/redis.ts` — Upstash Redis + in-memory fallback session store.

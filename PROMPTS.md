@@ -179,7 +179,7 @@
 - **AI Tool:** Gemini
 - **The Prompt:**
   > i think we need to make ai usage log from the first
-- **The Output:** Confirmed the AI Usage Log must be created on the very first commit and generated a starter `AI_USAGE_LOG.md` template with the required format.
+- **The Output:** Confirmed the AI Usage Log must be created on the very first commit and generated a starter `PROMPTS.md` template with the required format.
 
 ---
 
@@ -289,7 +289,7 @@
 - **AI Tool:** Gemini
 - **The Prompt:**
   > give me a small text in that ai log tell to what add here
-- **The Output:** Generated the system instruction block to be pasted at the top of `AI_USAGE_LOG.md`, telling any AI coding assistant exactly what format and fields to fill when commanded to update the log.
+- **The Output:** Generated the system instruction block to be pasted at the top of `PROMPTS.md`, telling any AI coding assistant exactly what format and fields to fill when commanded to update the log.
 
 ---
 

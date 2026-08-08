@@ -5,7 +5,7 @@
 ## 🏁 PHASE 0: Hackathon Rules & Repository Setup
 **Goal:** Establish compliance before writing a single line of logic.
 1.  **Initialize Git:** Start tracking immediately. Make small, atomic commits. 
-2.  **Create `AI_USAGE_LOG.md`:** This must be the very first commit. Track every generated snippet here.
+2.  **Create `PROMPTS.md`:** This must be the very first commit. Track every generated snippet here.
 3.  **Project Scaffold:** Run `npx create-next-app@latest`. Use TypeScript, Tailwind CSS, and App Router.
 4.  **Mock Data:** Create `/data/candidates.json` and `/data/curriculum.json`. The AI must parse these files locally.
 
@@ -92,5 +92,5 @@
 ## 🚨 PHASE 5: Live Steer Challenge Prep
 **Goal:** Ensure the codebase is ready for Stage 4 judging (live 20-minute coding).
 1.  **Component Isolation:** Ensure `route.ts`, the LangGraph agent, and the UI components do not share tangled logic. 
-2.  **Log Final Prompts:** Ensure the `AI_USAGE_LOG.md` is fully updated with all architectural prompts.
+2.  **Log Final Prompts:** Ensure the `PROMPTS.md` is fully updated with all architectural prompts.
 3.  **Test the Constraints:** Manually verify that the interview NEVER ends at 7 questions, and NEVER ends covering only 3 days.

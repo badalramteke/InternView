@@ -12,7 +12,7 @@
 ## 📁 Key Project Documents (Judges Start Here!)
 
 To get a clear understanding of the project's requirements, architectural decisions, and AI assistance history, please review the following core documents before exploring the codebase:
-- **[AI_USAGE_LOG.md](./AI_USAGE_LOG.md)**: A complete, chronologically tracked record of all AI interactions and prompts used to build this project (as required for the Stage 1 & 2 Authenticity Review).
+- **[PROMPTS.md](./PROMPTS.md)**: A complete, chronologically tracked record of all AI interactions and prompts used to build this project (as required for the Stage 1 & 2 Authenticity Review).
 - **[FoundationalFiles/](./FoundationalFiles/)**: Contains the core context driving the agent's logic.
   - **`PRD.md`**: The Product Requirements Document outlining the core problem, features, and target experience.
   - **`Architecture.md`**: The high-level technical design, data flows, and state machine diagram.
@@ -124,7 +124,7 @@ npx tsx scripts/test-phase5.ts
 
 ## 📝 Activity Log
 
-The progression of this project and all AI architectural prompts used during development have been thoroughly documented in the mandatory [AI_USAGE_LOG.md](./AI_USAGE_LOG.md) file in the repository root.
+The progression of this project and all AI architectural prompts used during development have been thoroughly documented in the mandatory [PROMPTS.md](./PROMPTS.md) file in the repository root.
 
 ---
 

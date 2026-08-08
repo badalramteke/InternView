@@ -45,5 +45,5 @@
 ├── data/
 │   ├── candidates.json           # Candidate progress and attempt metrics dataset
 │   └── curriculum.json           # 31-day curriculum topics, tools, and objectives
-├── AI_USAGE_LOG.md               # Mandatory hackathon prompt and tool usage log
+├── PROMPTS.md               # Mandatory hackathon prompt and tool usage log
 └── tailwind.config.ts            # Tailwind styling configurations
