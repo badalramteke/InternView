@@ -354,3 +354,11 @@
 - **AI Tool:** Gemini (Antigravity IDE / Gemini 3.1 Pro)
 - **The Prompt:** "You do not hand-hold. You do not make small talk. You are evaluating the candidate on their practical engineering depth, not their ability to recite textbook definitions... STRICT CONVERSATIONAL RULES: 1. NO GREETINGS... 2. BRUTAL PUSHBACK... 3. SCANNABLE STRUCTURE... QUESTION FORMATTING: TYPE A: ARCHITECTURAL DEEP-DIVE... TYPE B: THE CODE CHALLENGE"
 - **The Output:** Overhauled `INTERVIEWER_PERSONA` and `buildQuestionPrompt` in `lib/langgraph/prompts.ts`. The AI is now explicitly instructed to never say "Welcome" or "Moving on" unless it is the opening question, to aggressively interrupt generic definitions with Brutal Pushback, format its output using scannable Markdown (bold, lists), and specifically generate either Type A (Architectural Deep-Dive trade-offs) or Type B (Code Challenge snippet debugging) questions.
+
+---
+
+### Entry 37 — Intelligent Follow-Up Questions (Root Goal Optimization)
+- **Timestamp:** 2026-08-08, Final Polish
+- **AI Tool:** Gemini (Antigravity IDE)
+- **The Prompt:** "this is the root goal so check each and every file , line by line file by file to check is it implemented or not and make sure to do optimizations as needed 'Design and build an AI agent capable of conducting a realistic, multi-turn technical interview. The interview should... Ask intelligent follow-up questions...'"
+- **The Output:** Implemented intelligent follow-up loops to prevent the interview from feeling like a scripted questionnaire. Added `followUpsOnCurrentTopic` to `SessionStateSchema` in `lib/schemas.ts` and `lib/redis.ts`. Created `buildFollowUpPrompt` in `lib/langgraph/prompts.ts`. Updated `handleConversationTurn` in `lib/langgraph/engine.ts` so that when a candidate provides a good (`APPLIED`) answer, the agent asks a deep follow-up question digging into their answer before moving to a new topic. Updated `scripts/test-phase5.ts` to mock the schema change. All constraints verified passing.

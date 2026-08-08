@@ -32,6 +32,7 @@ import {
   buildEvaluationPrompt,
   buildPushbackPrompt,
   buildScorecardPrompt,
+  buildFollowUpPrompt,
 } from "./prompts";
 
 // ─────────────────────────────────────────────
@@ -213,6 +214,35 @@ export async function handleConversationTurn(
   ) {
     return await handleTermination(currentSession, candidateContext);
   }
+
+  // ─── APPLIED → Check if we should ask an Intelligent Follow-Up ───
+  if (currentSession.followUpsOnCurrentTopic === 0 && topicInfo) {
+    const prompt = buildFollowUpPrompt({
+      candidateAnswer: userMessage,
+      questionAsked: lastAssistantMsg,
+      topicTitle: topicInfo.title,
+    });
+
+    const reply = await generateText(prompt, {
+      temperature: 0.7,
+      maxTokens: 512,
+    });
+
+    const updatedSession = await updateSession({
+      ...currentSession,
+      questionsAsked: currentSession.questionsAsked + 1, // Follow-up counts as a real question
+      followUpsOnCurrentTopic: 1, // Mark that we've asked a follow-up
+      messages: [
+        ...currentSession.messages,
+        createMessage("assistant", reply),
+      ],
+    });
+
+    return { reply, done: false, updatedSession };
+  }
+
+  // If we already asked a follow-up, reset the counter for the next topic
+  currentSession.followUpsOnCurrentTopic = 0;
 
   // ─── Node 2: Select Topic & Generate Next Question ───
   const selectedDay = selectNextTopic(analysis, currentSession.daysCovered);

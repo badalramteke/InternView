@@ -123,6 +123,7 @@ export const SessionStateSchema = z.object({
   daysCovered: z.array(z.number()).default([]),
   flaggedTopics: z.array(z.string()).default([]),
   cognitiveGaps: z.array(z.string()).default([]),
+  followUpsOnCurrentTopic: z.number().default(0),
   isDone: z.boolean().default(false),
   createdAt: z.number(),
   updatedAt: z.number(),

@@ -138,6 +138,7 @@ export async function createSession(
     daysCovered: [],
     flaggedTopics: [],
     cognitiveGaps: [],
+    followUpsOnCurrentTopic: 0,
     isDone: false,
     createdAt: now,
     updatedAt: now,

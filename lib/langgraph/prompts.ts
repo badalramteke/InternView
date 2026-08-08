@@ -138,6 +138,34 @@ Respond in JSON format EXACTLY like this:
 }
 
 // ─────────────────────────────────────────────
+// Node: Intelligent Follow-Up
+// ─────────────────────────────────────────────
+
+export function buildFollowUpPrompt(params: {
+  candidateAnswer: string;
+  questionAsked: string;
+  topicTitle: string;
+}): string {
+  const { candidateAnswer, questionAsked, topicTitle } = params;
+
+  return `${INTERVIEWER_PERSONA}
+
+The candidate just provided a strong, applied answer to your previous question.
+
+TOPIC: "${topicTitle}"
+PREVIOUS QUESTION: "${questionAsked}"
+CANDIDATE'S GOOD ANSWER: "${candidateAnswer}"
+
+YOUR TASK:
+Acknowledge their strong answer briefly, then ask an intelligent follow-up question that digs deeper into the SPECIFIC details they just mentioned. 
+- Do NOT change the topic.
+- Probe an edge case, a scaling challenge, or an alternative approach related to their exact answer.
+- Do NOT use Type A or Type B formats here; ask a direct conversational follow-up.
+
+Generate EXACTLY ONE clear, specific technical follow-up question.`;
+}
+
+// ─────────────────────────────────────────────
 // Node: Brutal Pushback
 // ─────────────────────────────────────────────
 

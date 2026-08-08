@@ -81,6 +81,7 @@ function makeSession(overrides: Partial<SessionState> = {}): SessionState {
     daysCovered: [],
     flaggedTopics: [],
     cognitiveGaps: [],
+    followUpsOnCurrentTopic: 0,
     isDone: false,
     createdAt: Date.now(),
     updatedAt: Date.now(),
