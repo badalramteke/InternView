@@ -49,8 +49,8 @@ function isTurnRequest(body: unknown): body is TurnRequest {
   return (
     typeof body === "object" &&
     body !== null &&
-    "message" in body &&
-    !("candidate" in body)
+    !("candidate" in body) &&
+    ("message" in body || "action" in body)
   );
 }
 
